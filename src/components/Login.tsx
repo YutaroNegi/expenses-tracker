@@ -22,8 +22,6 @@ const Login = () => {
     const [loginForm, setLoginForm] = useState({ email: '', password: '' });
 
     const handleLogin = async (credentials: LoginCredentials) => {
-        console.log(credentials);
-
         setLoading(true);
         try {
             const user = await authService.login(credentials)
@@ -39,7 +37,6 @@ const Login = () => {
     }
 
     const handleInputChange = (key: string, value: string) => {
-        console.log(key, value);
         setLoginForm({ ...loginForm, [key]: value });
     }
 
