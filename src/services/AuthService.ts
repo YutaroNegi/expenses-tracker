@@ -45,12 +45,6 @@ export class AuthService {
     }
 
     async forgotPassword(email: string) {
-        try {
-            // todo: implement forgot password
-
-            return true
-        } catch (error) {
-            throw error;
-        }
+        return true
     }
 }

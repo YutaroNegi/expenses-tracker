@@ -6,7 +6,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { LoginPage, RegisterPage, ForgotPasswordPage  } from './routes/index';
+import { LoginPage, RegisterPage, ForgotPasswordPage, TrackerPage  } from './routes/index';
 import store from './redux/store'
 import { Provider } from 'react-redux'
 
@@ -31,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/forgot-password",
     element: <ForgotPasswordPage />,
+  },
+  {
+    path: "/tracker",
+    element: <TrackerPage />,
   },
 
 ]);

@@ -1,4 +1,6 @@
-import { Header, Login } from "../components"
+import { Header } from "../components"
+import { Login } from "../pages"
+
 export default function LoginPage() {
     return (
         <>
