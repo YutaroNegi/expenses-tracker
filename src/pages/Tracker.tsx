@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { SelectChangeEvent } from '@mui/material/Select';
-import { Dropdown, Input, Button } from "../components/index";
+import { Dropdown, Input, Button, ExpenseTable } from "../components/index";
 import { ChangeEvent } from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
@@ -79,6 +79,8 @@ export const Tracker = () => {
         loading={loading}
         label="Register"
       />
+
+      <ExpenseTable/>
     </Box>
   );
 };
