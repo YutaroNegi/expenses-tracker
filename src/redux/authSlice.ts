@@ -1,22 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './store'
+import type { AuthState } from '../types'
 
-// Define a type for the slice state
-interface LoginForm {
-    email: string;
-    password: string;
-}
 
-interface AuthState {
-    loginForm: LoginForm;
-    user: {
-        id: string;
-        username: string;
-        email: string;
-    };
-}
-
-// Define the initial state using that type
 const initialState: AuthState = {
     loginForm: {
         email: '',

@@ -4,29 +4,26 @@ import { setUser } from '../redux/authSlice'
 import { AuthService } from '../services/AuthService';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { Toast } from '../components'
-
+import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '../components'
-
-type LoginCredentials = {
-    email: string;
-    password: string;
-}
+import { LoginForm } from '../types'
 
 export const Login = () => {
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const authService = new AuthService();
 
     const [loading, setLoading] = useState(false);
     const [loginForm, setLoginForm] = useState({ email: '', password: '' });
 
-    const handleLogin = async (credentials: LoginCredentials) => {
+    const handleLogin = async (credentials: LoginForm) => {
         setLoading(true);
         try {
             const user = await authService.login(credentials)
             dispatch(setUser(user))
             toast.success('Login successful');
             setLoading(false);
+            navigate('/tracker');
         } catch (error) {
             console.log(error);
             toast.error('Login failed');
@@ -46,7 +43,6 @@ export const Login = () => {
             <Button onClick={() => handleLogin(loginForm)} label="Login" loading={loading}/>
             <Button to='/register' label="Register" variant='outlined'/>
             <Button to='/forgot-password' label="Forgot Password" variant='outlined'/>
-            <Toast />
         </Box>
     );
 };

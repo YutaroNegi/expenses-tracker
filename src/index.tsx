@@ -9,7 +9,7 @@ import {
 import { LoginPage, RegisterPage, ForgotPasswordPage, TrackerPage  } from './routes/index';
 import store from './redux/store'
 import { Provider } from 'react-redux'
-
+import { Toast } from './components/Toast';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -47,6 +47,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
     <RouterProvider router={router} />
+    <Toast />
     </Provider>
   </React.StrictMode>
 );

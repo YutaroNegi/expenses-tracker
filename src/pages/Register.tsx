@@ -5,17 +5,8 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { setUser } from '../redux/authSlice'
 import { Toast } from '../components';
-
+import { RegisterForm } from '../types';
 import { Input, Button } from '../components'
-
-type RegisterCredentials = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-}
-
 
 export const Register = () => {
     const dispatch = useAppDispatch();
@@ -24,7 +15,7 @@ export const Register = () => {
     const [registerForm, serRegisterForm] = useState({ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' });
     const [loading, setLoading] = useState(false);
 
-    const handleRegister = async (credentials: RegisterCredentials) => {
+    const handleRegister = async (credentials: RegisterForm) => {
         console.log(credentials);
 
         setLoading(true);
