@@ -27,7 +27,13 @@ export type categories = {
 export type ExpenseState = {
     currentDate: string;
     expenses: Expense[];
+    expenseRows: ExpenseRow[];
     total: number;
     categoryTotal: CategoryTotal[];
     categories: Category[];
+}
+
+export type ExpenseRow = {
+    category: string;
+    expenses: Expense[];
 }

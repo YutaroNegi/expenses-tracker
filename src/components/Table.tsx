@@ -12,17 +12,25 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { ExpenseRow } from '../types'
+import { FC } from 'react';
 
-function getTotal(expenses : any){
+const getTotal = (expenses: any) => {
     let total = 0
-    expenses.forEach((expense:any) => {
+    expenses.forEach((expense: any) => {
         total += expense.amount
     })
     return total
 }
 
-function Row(props: any) {
-    const { category, expenses } = props;
+const formatDate = (date: string) => {
+    const dateArray = date.split("-");
+    return dateArray[2] + "/" + dateArray[1] + "/" + dateArray[0];
+}
+
+const Row = (props: any) => {
+    const { category, expenses, handleDelete } = props;
 
     const [open, setOpen] = React.useState(false);
 
@@ -54,14 +62,16 @@ function Row(props: any) {
                                         <TableCell>Expense</TableCell>
                                         <TableCell>Amount</TableCell>
                                         <TableCell>Date</TableCell>
+                                        <TableCell align='center'>Action</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {expenses.map((expense: any) => (
                                         <TableRow key={expense.expenseId}>
-                                            <TableCell>{expense.name}</TableCell>
+                                            <TableCell>{expense.expense}</TableCell>
                                             <TableCell>{expense.amount}</TableCell>
-                                            <TableCell>{expense.date}</TableCell>
+                                            <TableCell>{formatDate(expense.date)}</TableCell>
+                                            <TableCell onClick={()=>handleDelete(expense.expenseId)} style={{ cursor: "pointer" }} align='center'><DeleteIcon /></TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -74,56 +84,26 @@ function Row(props: any) {
     );
 }
 
-const rows = [
-    {
-        category: 'Grocery',
-        expenses: [
-            {
-                expenseId: 1,
-                name: 'Carrefour',
-                amount: 900,
-                date: '2020-01-05',
-            },
-            {
-                expenseId: 2,
-                name: 'Extra',
-                amount: 500,
-                date: '2020-01-05',
-            },
-        ]
-    },
-    {
-        category: 'Pharmacy',
-        expenses: [
-            {
-                name: 'Pain killers',
-                amount: 100,
-                date: '2020-01-05',
-            },
-            {
-                name: 'Pain killers',
-                amount: 100,
-                date: '2020-01-05',
-            },
-        ]
-    },
-];
+type ExpenseTableProps = {
+    expensesRows: ExpenseRow[]
+    handleDelete: (id: number) => void
+}
 
-export function ExpenseTable() {
+export const ExpenseTable: FC<ExpenseTableProps> = ({ expensesRows, handleDelete }) => {
     return (
-        <Box sx={{ width: "30em", marginTop: '2em' }}>
+        <Box sx={{ width: "25em", marginTop: '2em' }}>
             <TableContainer component={Paper}>
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align='center'/>
+                            <TableCell align='center' />
                             <TableCell align='center'>Category</TableCell>
                             <TableCell align='center'>Category Total</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
-                            <Row category={row.category} expenses={row.expenses} />
+                        {expensesRows.map((row) => (
+                            <Row category={row.category} expenses={row.expenses} handleDelete={handleDelete} />
                         ))}
                     </TableBody>
                 </Table>
