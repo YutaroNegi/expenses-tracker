@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { SelectChangeEvent } from '@mui/material/Select';
-import { Dropdown, Input, Button, ExpenseTable } from "../components/index";
+import { Dropdown, Input, Button, ExpenseTable, DateSelector } from "../components/index";
 import { ChangeEvent } from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
@@ -63,12 +63,16 @@ export const Tracker = () => {
     dispatch(convertExpensesToRows());    
     toast.success('Expense registered successfully')
     setLoading(false);
+
+    console.log(expensesState);
+    
   };
 
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
+      <DateSelector/>
       <Input
         onChange={handleInputChange}
         name="expense"
@@ -103,7 +107,7 @@ export const Tracker = () => {
         label="Register"
       />
 
-      <ExpenseTable expensesRows={expensesState.expenseRows} handleDelete={handleDelete}  />
+      <ExpenseTable expensesRows={expensesState.expenseRows} handleDelete={handleDelete} />
     </Box>
   );
 };

@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './store'
-import type { Expense, CategoryTotal, ExpenseState, Category, ExpenseRow } from '../types/Expense'
+import type { Expense, CategoryTotal, ExpenseState, Category, ExpenseRow, ExpenseDate } from '../types/Expense'
 import { categories } from '../mock/expensesMock'
 
 
 const initialState: ExpenseState = {
-    currentDate: new Date().toISOString().slice(0, 10),
+    month: 1,
+    year: 2021,
     expenses: [],
     expenseRows: [],
     total: 0,
@@ -37,15 +38,33 @@ export const expenseSlice = createSlice({
         loadExpenses: (state, action: PayloadAction<Expense[]>) => {
             state.expenses = action.payload
         },
-        updateDate: (state, action: PayloadAction<string>) => {
-            state.currentDate = action.payload
+        updateDate: (state, action: PayloadAction<ExpenseDate>) => {
+            state.month = action.payload.month;
+            state.year = action.payload.year;
         },
         loadCategories: (state, action: PayloadAction<Category[]>) => {
             state.categories = action.payload
         },
         convertExpensesToRows: (state) => {
+            let filteredExpenses = state.expenses.filter((expense: Expense) => {
+                let expenseDate = expense.date.substring(0, expense.date.lastIndexOf("-"))
+                let expenseMonth = parseInt(expenseDate.substring(expenseDate.lastIndexOf("-") + 1));
+                let expenseYear = parseInt(expenseDate.substring(0, expenseDate.lastIndexOf("-")));
+
+                // console.log('expenseDate', 'expenseDate');
+                
+                // console.log(expenseMonth, expenseYear);
+
+                // console.log('stateDate', 'stateDate');
+            
+                // console.log(state.month, state.year);
+                
+                
+                if (expenseMonth === state.month && expenseYear === state.year) return true;
+            });
+        
             let expenseRows: ExpenseRow[] = [];
-            state.expenses.forEach((expense: Expense) => {
+            filteredExpenses.forEach((expense: Expense) => {
                 let expenseRow = expenseRows.find((expenseRow: ExpenseRow) => expenseRow.category === expense.category);
                 if (expenseRow) {
                     expenseRow.expenses.push(expense);
