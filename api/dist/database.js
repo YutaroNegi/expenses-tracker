@@ -1,11 +1,15 @@
 import { Sequelize } from 'sequelize';
-import { User } from './models/UserModel.js';
-const sequelize = new Sequelize('postgres://wznthdum:Wrdne7VnqjEfw31ds9IqBqG3r68TLPwW@jelani.db.elephantsql.com/wznthdum', {
+import { User, Category, categoryBulk, Expense } from './models/index.js';
+const sequelize = new Sequelize(process.env.POSTGRES_URL, {
     dialect: 'postgres',
 });
 export const sync = async () => {
     try {
+        await sequelize.sync();
         await User.sync();
+        await Category.sync();
+        await Expense.sync();
+        await categoryBulk;
         console.log('Database synced successfully');
     }
     catch (error) {

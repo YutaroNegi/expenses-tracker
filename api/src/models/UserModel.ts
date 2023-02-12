@@ -6,7 +6,7 @@ const sequelize = new Sequelize(process.env.POSTGRES_URL);
 
 const tableName : string = `users_${process.env.PROJECT_NAME}_${process.env.NODE_ENV}}`
 export const User : any = sequelize.define('User', {
-    id: {
+    userId: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
