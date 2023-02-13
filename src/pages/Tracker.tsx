@@ -14,6 +14,7 @@ import { useEffect } from "react";
 export const Tracker = () => {
   const expenseService = new ExpenseService();
   const expensesState = useSelector((state: any) => state.expense);
+  const userState = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
   const [tag, setTag] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,8 +23,10 @@ export const Tracker = () => {
 
   useEffect( () => {
     const getData = async () => {
+      console.log(userState.user)
       const categories = await expenseService.getCategories();
-      const expenses = await expenseService.getExpenses();
+      const expenses = await expenseService.getExpenses(userState.user.userId);
+      console.log(categories)
   
       dispatch(loadExpenses(expenses));
       dispatch(loadCategories(categories));

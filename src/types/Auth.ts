@@ -4,8 +4,9 @@ export interface LoginForm {
 }
 
 export interface User {
-    id: string;
-    username: string;
+    userId: string;
+    firstName: string;
+    lastName: string;
     email: string;
 }
 

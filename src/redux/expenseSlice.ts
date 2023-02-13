@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 import type { Expense, CategoryTotal, ExpenseState, Category, ExpenseRow, ExpenseDate } from '../types/Expense'
-import { categories } from '../mock/expensesMock'
 
 
 const initialState: ExpenseState = {
@@ -11,7 +10,7 @@ const initialState: ExpenseState = {
     expenseRows: [],
     total: 0,
     categoryTotal: [],
-    categories: categories
+    categories: []
 }
 
 export const expenseSlice = createSlice({

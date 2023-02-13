@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '../components'
-import { LoginForm } from '../types'
+import { LoginForm, User } from '../types'
 
 export const Login = () => {
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ export const Login = () => {
         setLoading(true);
         try {
             const user = await authService.login(credentials)
-            dispatch(setUser(user))
+            dispatch(setUser(user.dataValues))
             toast.success('Login successful');
             setLoading(false);
             navigate('/tracker');

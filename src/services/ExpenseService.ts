@@ -1,22 +1,24 @@
+import axios from 'axios';
 import { Expense, ExpenseForm } from '../types';
-import { categories, expenses } from '../mock/expensesMock'
+
+const baseUrl = 'http://localhost:5050/api/tracker';
 
 export class ExpenseService {
     async registerExpense(expenseForm: ExpenseForm) {
         try {
-            let response: Expense = {
-                expenseId: Math.floor(Math.random() * 1000),
+            const response = await axios.post(baseUrl + '/expense', {
                 ...expenseForm
-            }
-            return response
+            });
+            return response.data;
         } catch (error) {
             throw error;
         }
     }
 
-    async getExpenses() {
+    async getExpenses(userId: number) {
         try {
-            return expenses
+            const response = await axios.get(baseUrl + '/expenses/' + userId);
+            return response.data;
         } catch (error) {
             throw error;
         }
@@ -24,7 +26,8 @@ export class ExpenseService {
 
     async getCategories() {
         try {
-            return categories
+            const response = await axios.get(baseUrl + '/categories');
+            return response.data.categories;
         } catch (error) {
             throw error;
         }

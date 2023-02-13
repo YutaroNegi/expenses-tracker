@@ -16,8 +16,8 @@ type DropdownTypes = {
 }
 
 type Option = {
-    value: string;
-    label: string;
+    categoryId: number;
+    categoryName: string;
 }
 
 export const Dropdown: FC<DropdownTypes> = ({ options, value, onSelectedChange, key, label, marginTop = '1.5em', width = '15em' }) => {
@@ -34,8 +34,8 @@ export const Dropdown: FC<DropdownTypes> = ({ options, value, onSelectedChange, 
                     onChange={onSelectedChange}
                 >
                     {options.map((option: Option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                            {option.label}
+                        <MenuItem key={option.categoryId} value={option.categoryId}>
+                            {option.categoryName}
                         </MenuItem>
                     ))}
 

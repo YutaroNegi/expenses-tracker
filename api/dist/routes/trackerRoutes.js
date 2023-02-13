@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 import { TrackerController } from '../controllers/TrackerController.js';
 dotenv.config();
 router.get('/categories', TrackerController.listCategories);
-router.get('/expenses', TrackerController.listExpenses);
+router.get('/expenses/:userId', TrackerController.listExpenses);
 router.post('/expense', TrackerController.createExpense);
 router.put('/expense', TrackerController.updateExpense);
 router.delete('/expense', TrackerController.deleteExpense);

@@ -12,14 +12,14 @@ type RegisterForm = {
     password: string;
 };
 
-const baseUrl = 'https://dummyjson.com/auth';
+const baseUrl = 'http://localhost:5050/api/auth';
 
 export class AuthService {
     async login(loginForm: LoginForm) {
         try {
             // todo: implement login
             const response = await axios.post(baseUrl + '/login', {
-                username: loginForm.email,
+                email: loginForm.email,
                 password: loginForm.password
             });
 

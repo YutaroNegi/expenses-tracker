@@ -12,7 +12,7 @@ export class TrackerController {
     }
     static async listExpenses(req, res) {
         try {
-            const fkUserId = req.body.fkUserId;
+            const fkUserId = req.params.userId;
             if (!fkUserId) {
                 return res.status(400).json({ message: 'Missing information' });
             }
