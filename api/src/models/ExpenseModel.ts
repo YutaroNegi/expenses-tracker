@@ -4,7 +4,7 @@ dotenv.config()
 import { Sequelize, DataTypes } from 'sequelize';
 const sequelize = new Sequelize(process.env.POSTGRES_URL);
 
-const tableName : string = `expenses_${process.env.PROJECT_NAME}_${process.env.NODE_ENV}}`
+const tableName : string = `expenses_${process.env.PROJECT_NAME}_${process.env.NODE_ENV}`
 export const Expense : any = sequelize.define('Expense', {
     expenseId: {
         type: DataTypes.INTEGER,

@@ -13,7 +13,7 @@ const defaultCategories = [
     { categoryName: 'Other'}
 ]
 
-const tableName : string = `categories_${process.env.PROJECT_NAME}_${process.env.NODE_ENV}}`
+const tableName : string = `categories_${process.env.PROJECT_NAME}_${process.env.NODE_ENV}`
 export const Category : any = sequelize.define('Category', {
     categoryId: {
         type: DataTypes.INTEGER,
@@ -29,5 +29,10 @@ export const Category : any = sequelize.define('Category', {
     tableName: tableName
 });
 
-export const categoryBulk = Category.bulkCreate(defaultCategories)
-
+export const startCategoryTable = async () => {
+    await Category.sync()
+    const categories = await Category.findAll()
+    if(categories.length === 0){
+        await Category.bulkCreate(defaultCategories)
+    }
+}

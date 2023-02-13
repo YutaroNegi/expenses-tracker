@@ -10,7 +10,7 @@ const defaultCategories = [
     { categoryName: 'Utilities' },
     { categoryName: 'Other' }
 ];
-const tableName = `categories_${process.env.PROJECT_NAME}_${process.env.NODE_ENV}}`;
+const tableName = `categories_${process.env.PROJECT_NAME}_${process.env.NODE_ENV}`;
 export const Category = sequelize.define('Category', {
     categoryId: {
         type: DataTypes.INTEGER,
@@ -25,5 +25,11 @@ export const Category = sequelize.define('Category', {
 }, {
     tableName: tableName
 });
-export const categoryBulk = Category.bulkCreate(defaultCategories);
+export const startCategoryTable = async () => {
+    await Category.sync();
+    const categories = await Category.findAll();
+    if (categories.length === 0) {
+        await Category.bulkCreate(defaultCategories);
+    }
+};
 //# sourceMappingURL=CategoryModel.js.map

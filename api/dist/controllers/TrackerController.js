@@ -13,6 +13,9 @@ export class TrackerController {
     static async listExpenses(req, res) {
         try {
             const fkUserId = req.body.fkUserId;
+            if (!fkUserId) {
+                return res.status(400).json({ message: 'Missing information' });
+            }
             const expenses = await Expense.findAll({ where: { fkUserId } });
             return res.status(200).json({ expenses });
         }
