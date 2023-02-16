@@ -68,9 +68,9 @@ const Row = (props: any) => {
                                 <TableBody>
                                     {expenses.map((expense: any) => (
                                         <TableRow key={expense.expenseId}>
-                                            <TableCell>{expense.expense}</TableCell>
+                                            <TableCell>{expense.expenseName}</TableCell>
                                             <TableCell>{expense.amount}</TableCell>
-                                            <TableCell>{formatDate(expense.date)}</TableCell>
+                                            <TableCell>{formatDate(expense.expenseDate)}</TableCell>
                                             <TableCell onClick={()=>handleDelete(expense.expenseId)} style={{ cursor: "pointer" }} align='center'><DeleteIcon /></TableCell>
                                         </TableRow>
                                     ))}

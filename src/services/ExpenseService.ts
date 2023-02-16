@@ -1,15 +1,27 @@
 import axios from 'axios';
-import { Expense, ExpenseForm } from '../types';
+import { RegisterExpenseForm } from '../types';
 
 const baseUrl = 'http://localhost:5050/api/tracker';
 
 export class ExpenseService {
-    async registerExpense(expenseForm: ExpenseForm) {
+    async registerExpense(expenseForm: RegisterExpenseForm) {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
         try {
             const response = await axios.post(baseUrl + '/expense', {
-                ...expenseForm
+                ...expenseForm,
+                fkUserId: user.userId
             });
-            return response.data;
+
+            console.log(response.data);
+            
+            return {
+                expenseId: response.data.expense.expenseId,
+                expenseDate: response.data.expense.expenseDate.substring(0, response.data.expenseDate.lastIndexOf("T")),
+                amount: response.data.expense.amount,
+                categoryName: response.data.expense.categoryName,
+                fkUserId: response.data.expense.fkUserId,
+                expenseName: response.data.expense.expenseName
+            }
         } catch (error) {
             throw error;
         }
@@ -18,7 +30,8 @@ export class ExpenseService {
     async getExpenses(userId: number) {
         try {
             const response = await axios.get(baseUrl + '/expenses/' + userId);
-            return response.data;
+
+            return response.data.expenseList;
         } catch (error) {
             throw error;
         }

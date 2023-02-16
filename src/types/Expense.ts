@@ -1,9 +1,17 @@
 export type ExpenseForm = {
     amount: number;
-    expense: string;
-    date: string;
-    category: string;
+    expenseName: string;
+    expenseDate: string;
+    categoryName: string;
 };
+
+export type RegisterExpenseForm = {
+    amount: number;
+    expenseName: string;
+    expenseDate: string;
+    fkCategoryId: number;
+};
+
 
 export type Expense = {
     expenseId: number;
@@ -39,7 +47,7 @@ export type ExpenseRow = {
     expenses: Expense[];
 }
 
-export type ExpenseDate = { 
+export type ExpenseDate = {
     month: number;
     year: number;
 }

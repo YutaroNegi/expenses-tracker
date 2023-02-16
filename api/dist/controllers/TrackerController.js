@@ -16,8 +16,28 @@ export class TrackerController {
             if (!fkUserId) {
                 return res.status(400).json({ message: 'Missing information' });
             }
-            const expenses = await Expense.findAll({ where: { fkUserId } });
-            return res.status(200).json({ expenses });
+            const expenses = await Expense.findAll({
+                where: {
+                    fkUserId: fkUserId
+                },
+                include: [{
+                        model: Category,
+                        attributes: ['categoryName']
+                    }]
+            });
+            const expenseList = expenses.map((expense) => {
+                return {
+                    expenseId: expense.expenseId,
+                    fkUserId: expense.fkUserId,
+                    fkCategoryId: expense.fkCategoryId,
+                    categoryName: expense.Category.categoryName,
+                    expenseName: expense.expenseName,
+                    amount: expense.amount,
+                    // convert to yyyy-mm-dd format
+                    expenseDate: expense.expenseDate.toISOString().slice(0, 10)
+                };
+            });
+            return res.status(200).json({ expenseList });
         }
         catch (error) {
             return res.status(500).json({ message: 'Error listing expenses', error });

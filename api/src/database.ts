@@ -1,13 +1,20 @@
 import { Sequelize } from 'sequelize';
-import { User, startCategoryTable, Expense } from './models/index.js';
+import { User, startCategoryTable, Expense, Category } from './models/index.js';
 
 const sequelize = new Sequelize(process.env.POSTGRES_URL);
 
 export const sync = async () => {
-    try {
+    try {   
+        Expense.belongsTo(Category, { foreignKey: 'fkCategoryId' });
+        Category.hasMany(Expense, { foreignKey: 'fkCategoryId' });
+        Expense.belongsTo(User, { foreignKey: 'fkUserId' });
+        User.hasMany(Expense, { foreignKey: 'fkUserId' });
+        
         await User.sync();
         await Expense.sync();
         await startCategoryTable();
+
+        
         console.log('Database synced successfully');
     } catch (error) {
         console.error('Unable to sync database:', error);

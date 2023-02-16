@@ -24,11 +24,11 @@ export const expenseSlice = createSlice({
             let categoryTotal: CategoryTotal[] = [];
             state.expenses.forEach((expense: Expense) => {
                 total += expense.amount;
-                let category = categoryTotal.find((categoryTotal: CategoryTotal) => categoryTotal.category === expense.category);
+                let category = categoryTotal.find((categoryTotal: CategoryTotal) => categoryTotal.category === expense.categoryName);
                 if (category) {
                     category.total += expense.amount;
                 } else {
-                    categoryTotal.push({ category: expense.category, total: expense.amount });
+                    categoryTotal.push({ category: expense.categoryName, total: expense.amount });
                 }
             });
             state.total = total;
@@ -46,29 +46,19 @@ export const expenseSlice = createSlice({
         },
         convertExpensesToRows: (state) => {
             let filteredExpenses = state.expenses.filter((expense: Expense) => {
-                let expenseDate = expense.date.substring(0, expense.date.lastIndexOf("-"))
+                let expenseDate = expense.expenseDate.substring(0, expense.expenseDate.lastIndexOf("-"))
                 let expenseMonth = parseInt(expenseDate.substring(expenseDate.lastIndexOf("-") + 1));
-                let expenseYear = parseInt(expenseDate.substring(0, expenseDate.lastIndexOf("-")));
-
-                // console.log('expenseDate', 'expenseDate');
-                
-                // console.log(expenseMonth, expenseYear);
-
-                // console.log('stateDate', 'stateDate');
-            
-                // console.log(state.month, state.year);
-                
-                
+                let expenseYear = parseInt(expenseDate.substring(0, expenseDate.lastIndexOf("-")));                
                 if (expenseMonth === state.month && expenseYear === state.year) return true;
             });
         
             let expenseRows: ExpenseRow[] = [];
             filteredExpenses.forEach((expense: Expense) => {
-                let expenseRow = expenseRows.find((expenseRow: ExpenseRow) => expenseRow.category === expense.category);
+                let expenseRow = expenseRows.find((expenseRow: ExpenseRow) => expenseRow.category === expense.categoryName);
                 if (expenseRow) {
                     expenseRow.expenses.push(expense);
                 } else {
-                    expenseRows.push({ category: expense.category, expenses: [expense] });
+                    expenseRows.push({ category: expense.categoryName, expenses: [expense] });
                 }
             });
 

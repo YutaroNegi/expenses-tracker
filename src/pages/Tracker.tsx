@@ -1,86 +1,119 @@
 import Box from "@mui/material/Box";
-import { SelectChangeEvent } from '@mui/material/Select';
-import { Dropdown, Input, Button, ExpenseTable, DateSelector } from "../components/index";
+import { SelectChangeEvent } from "@mui/material/Select";
+import {
+  Dropdown,
+  Input,
+  Button,
+  ExpenseTable,
+  DateSelector,
+} from "../components/index";
 import { ChangeEvent } from "react";
 import { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { addExpense, loadCategories, loadExpenses, convertExpensesToRows, deleteExpense } from '../redux/expenseSlice';
-import { ExpenseService } from '../services/ExpenseService';
-import { ExpenseForm } from '../types';
-import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from "react-redux";
+import {
+  addExpense,
+  loadCategories,
+  loadExpenses,
+  convertExpensesToRows,
+  deleteExpense,
+} from "../redux/expenseSlice";
+import { ExpenseService } from "../services/ExpenseService";
+import { RegisterExpenseForm } from "../types";
+import { toast } from "react-toastify";
 import { useEffect } from "react";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import Backdrop from '@mui/material/Backdrop';
 
 export const Tracker = () => {
   const expenseService = new ExpenseService();
   const expensesState = useSelector((state: any) => state.expense);
   const userState = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
-  const [tag, setTag] = useState('');
+  const [tag, setTag] = useState("");
   const [loading, setLoading] = useState(false);
-  const [expenseForm, setExpenseForm] = useState<ExpenseForm>({ amount: 0, expense: '', date: new Date().toISOString().slice(0, 10), category: '' });
+  const [screenLoading, setScreenLoading] = useState(false);
+  const [expenseForm, setExpenseForm] = useState<RegisterExpenseForm>({
+    amount: 0,
+    expenseName: "",
+    expenseDate: "",
+    fkCategoryId: 0,
+  });
 
 
-  useEffect( () => {
+  useEffect(() => {
     const getData = async () => {
-      console.log(userState.user)
+      setScreenLoading(true);
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      console.log(1);
+      
       const categories = await expenseService.getCategories();
-      const expenses = await expenseService.getExpenses(userState.user.userId);
-      console.log(categories)
-  
+      console.log(2);
+      
+      const expenses = await expenseService.getExpenses(user.userId);
+      console.log(3);
+      setScreenLoading(false);
+      console.log(screenLoading)
+      
       dispatch(loadExpenses(expenses));
       dispatch(loadCategories(categories));
-      dispatch(convertExpensesToRows());    
-    }
+      dispatch(convertExpensesToRows());
+
+
+    };
 
     getData();
   }, []);
 
   const handleDelete = async (id: number) => {
-    console.log(id);
-    
     await expenseService.deleteExpense(id);
     dispatch(deleteExpense(id));
     dispatch(convertExpensesToRows());
-  }
+  };
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setExpenseForm({ ...expenseForm, [e.target.name]: e.target.name === 'amount' ? parseFloat(e.target.value) : e.target.value });
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setExpenseForm({
+      ...expenseForm,
+      [e.target.name]:
+        e.target.name === "amount"
+          ? parseFloat(e.target.value)
+          : e.target.value,
+    });
   };
 
   const handleDropdownChange = (event: SelectChangeEvent) => {
     setTag(event.target.value as string);
-    setExpenseForm({ ...expenseForm, category: event.target.value as string })
+    setExpenseForm({ ...expenseForm, fkCategoryId: parseInt(event.target.value)});
   };
 
   const handleAddExpense = async () => {
-    if (!expenseForm.expense || !expenseForm.amount || !expenseForm.date || !expenseForm.category) {
-      toast.error('Please fill all the fields');
+    console.log(expenseForm);
+    
+    if (
+      !expenseForm.expenseName ||
+      !expenseForm.amount ||
+      !expenseForm.expenseDate ||
+      !expenseForm.fkCategoryId
+    ) {
+      toast.error("Please fill all the fields");
       return;
     }
 
     setLoading(true);
-
     const expenseResponse = await expenseService.registerExpense(expenseForm);
     dispatch(addExpense(expenseResponse));
-    dispatch(convertExpensesToRows());    
-    toast.success('Expense registered successfully')
+    dispatch(convertExpensesToRows());
+    toast.success("Expense registered successfully");
     setLoading(false);
-
-    console.log(expensesState);
-    
   };
 
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <DateSelector/>
-      <Input
-        onChange={handleInputChange}
-        name="expense"
-        label="Expense"
-      />
+      <DateSelector />
+      <Input onChange={handleInputChange} name="expenseName" label="Expense" />
       <Input
         onChange={handleInputChange}
         name="amount"
@@ -88,19 +121,14 @@ export const Tracker = () => {
         label="Amount"
       />
 
-      <Input
-        onChange={handleInputChange}
-        name="date"
-        type="date"
-        label=""
-      />
+      <Input onChange={handleInputChange} name="expenseDate" type="date" label="" />
 
       <Dropdown
         onSelectedChange={handleDropdownChange}
         options={expensesState.categories}
         value={tag}
-        key="tag"
-        label="Tag"
+        key="fkCategoryId"
+        label="Category"
       />
 
       <Button
@@ -110,7 +138,19 @@ export const Tracker = () => {
         label="Register"
       />
 
-      <ExpenseTable expensesRows={expensesState.expenseRows} handleDelete={handleDelete} />
+      <ExpenseTable
+        expensesRows={expensesState.expenseRows}
+        handleDelete={handleDelete}
+      />
+
+      <div>
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={screenLoading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </div>
     </Box>
   );
 };

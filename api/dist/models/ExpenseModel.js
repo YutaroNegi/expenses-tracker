@@ -12,12 +12,22 @@ export const Expense = sequelize.define('Expense', {
     fkUserId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: false
+        unique: false,
+        references: {
+            model: {
+                tableName: `users_${process.env.PROJECT_NAME}_${process.env.NODE_ENV}`,
+            },
+            key: 'userId'
+        }
     },
     fkCategoryId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: false
+        unique: false,
+        references: {
+            model: `categories_${process.env.PROJECT_NAME}_${process.env.NODE_ENV}`,
+            key: 'categoryId'
+        }
     },
     expenseName: {
         type: DataTypes.STRING,

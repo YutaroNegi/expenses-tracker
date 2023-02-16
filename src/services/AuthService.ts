@@ -23,6 +23,8 @@ export class AuthService {
                 password: loginForm.password
             });
 
+            localStorage.setItem('user', JSON.stringify(response.data.dataValues));
+
             return response.data;
         } catch (error) {
             throw error;
