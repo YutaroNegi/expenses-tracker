@@ -12,7 +12,7 @@ type RegisterForm = {
     password: string;
 };
 
-const baseUrl = 'http://localhost:5050/api/auth';
+const baseUrl = './api/auth';
 
 export class AuthService {
     async login(loginForm: LoginForm) {
