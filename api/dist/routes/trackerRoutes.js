@@ -1,7 +1,7 @@
 import express from 'express';
-const router = express.Router();
 import * as dotenv from 'dotenv';
 import { TrackerController } from '../controllers/TrackerController.js';
+const router = express.Router();
 dotenv.config();
 router.get('/categories', TrackerController.listCategories);
 router.get('/expenses/:userId', TrackerController.listExpenses);

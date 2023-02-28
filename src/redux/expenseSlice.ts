@@ -8,9 +8,10 @@ const initialState: ExpenseState = {
     year: 2021,
     expenses: [],
     expenseRows: [],
-    total: 0,
     categoryTotal: [],
-    categories: []
+    categories: [],
+    monthExpenseTotal: 0,
+    monthIncomeTotal: 0,
 }
 
 export const expenseSlice = createSlice({
@@ -20,10 +21,14 @@ export const expenseSlice = createSlice({
         addExpense: (state, action: PayloadAction<Expense>) => {
             state.expenses.push(action.payload)
 
-            let total = 0;
             let categoryTotal: CategoryTotal[] = [];
             state.expenses.forEach((expense: Expense) => {
-                total += expense.amount;
+                if (expense.categoryName === "Income"){
+                    state.monthIncomeTotal += expense.amount;
+                    return;
+                }
+
+                state.monthExpenseTotal += expense.amount;
                 let category = categoryTotal.find((categoryTotal: CategoryTotal) => categoryTotal.category === expense.categoryName);
                 if (category) {
                     category.total += expense.amount;
@@ -31,7 +36,6 @@ export const expenseSlice = createSlice({
                     categoryTotal.push({ category: expense.categoryName, total: expense.amount });
                 }
             });
-            state.total = total;
             state.categoryTotal = categoryTotal;
         },
         loadExpenses: (state, action: PayloadAction<Expense[]>) => {

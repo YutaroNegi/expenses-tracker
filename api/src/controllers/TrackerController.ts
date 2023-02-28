@@ -38,7 +38,7 @@ export class TrackerController {
           fkCategoryId: expense.fkCategoryId,
           categoryName: expense.Category.categoryName,
           expenseName: expense.expenseName,
-          amount: expense.amount,
+          amount: parseFloat(expense.amount),
           expenseDate: expense.expenseDate.toISOString().slice(0, 10)
         }
       });

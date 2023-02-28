@@ -37,9 +37,10 @@ export type ExpenseState = {
     year: number;
     expenses: Expense[];
     expenseRows: ExpenseRow[];
-    total: number;
     categoryTotal: CategoryTotal[];
     categories: Category[];
+    monthExpenseTotal: number;
+    monthIncomeTotal: number;
 }
 
 export type ExpenseRow = {

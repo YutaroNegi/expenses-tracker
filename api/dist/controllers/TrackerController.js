@@ -32,8 +32,7 @@ export class TrackerController {
                     fkCategoryId: expense.fkCategoryId,
                     categoryName: expense.Category.categoryName,
                     expenseName: expense.expenseName,
-                    amount: expense.amount,
-                    // convert to yyyy-mm-dd format
+                    amount: parseFloat(expense.amount),
                     expenseDate: expense.expenseDate.toISOString().slice(0, 10)
                 };
             });

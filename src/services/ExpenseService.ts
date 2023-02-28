@@ -30,7 +30,7 @@ export class ExpenseService {
     async getExpenses(userId: number) {
         try {
             const response = await axios.get(baseUrl + '/expenses/' + userId);
-
+            
             return response.data.expenseList;
         } catch (error) {
             throw error;

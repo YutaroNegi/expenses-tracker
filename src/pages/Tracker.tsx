@@ -16,6 +16,7 @@ import {
   loadExpenses,
   convertExpensesToRows,
   deleteExpense,
+  updateDate
 } from "../redux/expenseSlice";
 import { ExpenseService } from "../services/ExpenseService";
 import { RegisterExpenseForm } from "../types";
@@ -43,22 +44,21 @@ export const Tracker = () => {
   useEffect(() => {
     const getData = async () => {
       setScreenLoading(true);
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-      console.log(1);
-      
+
+      const user = JSON.parse(localStorage.getItem("user") || "{}");      
       const categories = await expenseService.getCategories();
-      console.log(2);
-      
       const expenses = await expenseService.getExpenses(user.userId);
-      console.log(3);
+      const currentDate = {
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear(),
+      }
+
       setScreenLoading(false);
-      console.log(screenLoading)
       
       dispatch(loadExpenses(expenses));
       dispatch(loadCategories(categories));
       dispatch(convertExpensesToRows());
-
-
+      dispatch(updateDate(currentDate));
     };
 
     getData();
@@ -112,7 +112,7 @@ export const Tracker = () => {
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <DateSelector />
+      <DateSelector/>
       <Input onChange={handleInputChange} name="expenseName" label="Expense" />
       <Input
         onChange={handleInputChange}

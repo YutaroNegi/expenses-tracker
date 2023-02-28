@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv'
-dotenv.config()
 
 import { Sequelize, DataTypes } from 'sequelize';
+dotenv.config()
 const sequelize = new Sequelize(process.env.POSTGRES_URL);
 
 const defaultCategories = [
@@ -10,6 +10,9 @@ const defaultCategories = [
     { categoryName: 'Entertainment'},
     { categoryName: 'Shopping'},
     { categoryName: 'Utilities'},
+    { categoryName: 'Farmacy'},
+    { categoryName: 'Bills'},
+    { categoryName: 'Income'},
     { categoryName: 'Other'}
 ]
 
