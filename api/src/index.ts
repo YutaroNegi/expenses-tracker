@@ -20,6 +20,9 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json())
 app.use('/api/auth', authRoutes)
 app.use('/api/tracker', trackerRoutes)
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
 // app.get('/*', (req, res) => {
 //   const indexPath = path.join(process.cwd(), '..' ,'build', 'index.html');
 //   console.log(indexPath);
