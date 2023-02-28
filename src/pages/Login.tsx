@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { Input, Button } from '../components'
-import { LoginForm, User } from '../types'
+import { LoginForm } from '../types'
 
 export const Login = () => {
     const navigate = useNavigate();

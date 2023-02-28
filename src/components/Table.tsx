@@ -19,8 +19,9 @@ import { FC } from "react";
 const getTotal = (expenses: any) => {
   let total = 0;
   expenses.forEach((expense: any) => {
-    if (expense.amount) total += expense.amount;
+    if (expense.amount) total += parseFloat(expense.amount);
   });
+  
   return total.toFixed(2);
 };
 

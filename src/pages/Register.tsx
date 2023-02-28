@@ -7,8 +7,10 @@ import { setUser } from '../redux/authSlice'
 import { Toast } from '../components';
 import { RegisterForm } from '../types';
 import { Input, Button } from '../components'
+import { useNavigate } from 'react-router-dom';
 
 export const Register = () => {
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const authService = new AuthService();
 
@@ -28,6 +30,7 @@ export const Register = () => {
             dispatch(setUser(user))
             toast.success('Register successful');
             setLoading(false);
+            navigate('/tracker');
         } catch (error) {
             console.log(error);
             toast.error('Register failed');

@@ -106,8 +106,6 @@ export const Tracker = () => {
       expenseForm.amount = expenseForm.amount * -1;
     }
 
-    expenseForm.amount = parseFloat(expenseForm.amount.toFixed(2));
-
     setLoading(true);
     const expenseResponse = await expenseService.registerExpense(expenseForm);
     dispatch(addExpense(expenseResponse));
