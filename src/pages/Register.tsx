@@ -16,8 +16,6 @@ export const Register = () => {
     const [loading, setLoading] = useState(false);
 
     const handleRegister = async (credentials: RegisterForm) => {
-        console.log(credentials);
-
         setLoading(true);
         try {
             if (credentials.password !== credentials.confirmPassword) {

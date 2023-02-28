@@ -1,7 +1,7 @@
 import express from 'express';
-const router = express.Router()
 import * as dotenv from 'dotenv'
 import { AuthController } from '../controllers/AuthController.js';
+const router = express.Router()
 dotenv.config()
 
 router.post('/login', AuthController.login)

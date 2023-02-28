@@ -33,10 +33,10 @@ export class AuthService {
 
     async register(registerForm: RegisterForm) {
         try {
-            // todo: implement  register
-
-            const response = await axios.post(baseUrl + '/login', {
-                username: registerForm.email,
+            const response = await axios.post(baseUrl + '/register', {
+                firstName: registerForm.firstName,
+                lastName: registerForm.lastName,
+                email: registerForm.email,
                 password: registerForm.password
             });
 

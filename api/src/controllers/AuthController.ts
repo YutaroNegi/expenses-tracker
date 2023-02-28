@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
-const saltRounds = 10;
 
 import { Request, Response } from "express";
 import { User } from "../models/UserModel.js";
+const saltRounds = 10;
 
 
 export class AuthController {

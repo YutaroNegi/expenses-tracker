@@ -56,12 +56,12 @@ export const Tracker = () => {
       year: new Date().getFullYear(),
     }
 
-    setScreenLoading(false);
-    
-    dispatch(loadExpenses(expenses));
     dispatch(loadCategories(categories));
-    dispatch(convertExpensesToRows());
     dispatch(updateDate(currentDate));
+    dispatch(loadExpenses(expenses));
+    dispatch(convertExpensesToRows());
+
+    setScreenLoading(false);
   };
 
   const handleDelete = async (id: number) => {

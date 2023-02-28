@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-const saltRounds = 10;
 import { User } from "../models/UserModel.js";
+const saltRounds = 10;
 export class AuthController {
     static async login(req, res) {
         const { email, password } = req.body;
