@@ -19,9 +19,9 @@ import { FC } from "react";
 const getTotal = (expenses: any) => {
   let total = 0;
   expenses.forEach((expense: any) => {
-    total += expense.amount;
+    if (expense.amount) total += expense.amount;
   });
-  return total;
+  return total.toFixed(2);
 };
 
 const formatDate = (date: string) => {
@@ -112,7 +112,7 @@ export const ExpenseTable: FC<ExpenseTableProps> = ({
           <TableBody>
             <TableRow style={{backgroundColor: "#2196F3"}}>
               <TableCell />
-              <TableCell align="center" style={{color: "#FFFFFF"}}>Total - Income</TableCell>
+              <TableCell align="center" style={{color: "#FFFFFF"}}>Total Spent</TableCell>
               <TableCell align="center" style={{color: "#FFFFFF"}}>{total}</TableCell>
             </TableRow>
             {expensesRows.map((row) => (

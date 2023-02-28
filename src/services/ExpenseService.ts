@@ -10,13 +10,11 @@ export class ExpenseService {
             const response = await axios.post(baseUrl + '/expense', {
                 ...expenseForm,
                 fkUserId: user.userId
-            });
-
-            console.log(response.data);
+            });            
             
             return {
                 expenseId: response.data.expense.expenseId,
-                expenseDate: response.data.expense.expenseDate.substring(0, response.data.expenseDate.lastIndexOf("T")),
+                expenseDate: response.data.expense.expenseDate,
                 amount: response.data.expense.amount,
                 categoryName: response.data.expense.categoryName,
                 fkUserId: response.data.expense.fkUserId,
@@ -48,7 +46,8 @@ export class ExpenseService {
 
     async deleteExpense(expenseId: number) {
         try {
-            return expenseId
+            const response = await axios.delete(baseUrl + '/expense/' + expenseId);
+            return response.data;
         } catch (error) {
             throw error;
         }

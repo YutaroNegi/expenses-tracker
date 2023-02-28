@@ -42,32 +42,36 @@ export const Tracker = () => {
 
 
   useEffect(() => {
-    const getData = async () => {
-      setScreenLoading(true);
-
-      const user = JSON.parse(localStorage.getItem("user") || "{}");      
-      const categories = await expenseService.getCategories();
-      const expenses = await expenseService.getExpenses(user.userId);
-      const currentDate = {
-        month: new Date().getMonth() + 1,
-        year: new Date().getFullYear(),
-      }
-
-      setScreenLoading(false);
-      
-      dispatch(loadExpenses(expenses));
-      dispatch(loadCategories(categories));
-      dispatch(convertExpensesToRows());
-      dispatch(updateDate(currentDate));
-    };
-
     getData();
   }, []);
 
+  const getData = async () => {
+    setScreenLoading(true);
+
+    const user = JSON.parse(localStorage.getItem("user") || "{}");      
+    const categories = await expenseService.getCategories();
+    const expenses = await expenseService.getExpenses(user.userId);
+    const currentDate = {
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),
+    }
+
+    setScreenLoading(false);
+    
+    dispatch(loadExpenses(expenses));
+    dispatch(loadCategories(categories));
+    dispatch(convertExpensesToRows());
+    dispatch(updateDate(currentDate));
+  };
+
   const handleDelete = async (id: number) => {
+    setLoading(true);
+    expenseService.deleteExpense(id);
     await expenseService.deleteExpense(id);
     dispatch(deleteExpense(id));
     dispatch(convertExpensesToRows());
+    setLoading(false);
+    toast.success("Expense deleted successfully");
   };
 
   const handleInputChange = (
@@ -88,8 +92,6 @@ export const Tracker = () => {
   };
 
   const handleAddExpense = async () => {
-    console.log(expenseForm);
-    
     if (
       !expenseForm.expenseName ||
       !expenseForm.amount ||
@@ -100,10 +102,17 @@ export const Tracker = () => {
       return;
     }
 
+    if (expenseForm.fkCategoryId === 8){
+      expenseForm.amount = expenseForm.amount * -1;
+    }
+
+    expenseForm.amount = parseFloat(expenseForm.amount.toFixed(2));
+
     setLoading(true);
     const expenseResponse = await expenseService.registerExpense(expenseForm);
     dispatch(addExpense(expenseResponse));
     dispatch(convertExpensesToRows());
+    await getData();
     toast.success("Expense registered successfully");
     setLoading(false);
   };

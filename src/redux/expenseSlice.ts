@@ -66,11 +66,7 @@ export const expenseSlice = createSlice({
                 }
             });
 
-            state.expenseRows = expenseRows.sort((a, b) => {
-                if (a.category === "Other") return 1;
-                if (b.category === "Other") return -1;
-                return a.category.localeCompare(b.category);
-            });
+            state.expenseRows = expenseRows
         },
         deleteExpense: (state, action: PayloadAction<Number>) => {
             state.expenses = state.expenses.filter((expense: Expense) => expense.expenseId !== action.payload);
