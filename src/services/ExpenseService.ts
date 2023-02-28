@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { RegisterExpenseForm } from '../types';
 
-const baseUrl = './api/auth';
+const baseUrl = './api/tracker';
 
 export class ExpenseService {
     async registerExpense(expenseForm: RegisterExpenseForm) {
