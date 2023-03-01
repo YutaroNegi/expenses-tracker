@@ -30,8 +30,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "dev": "CI=false react-scripts start",
-    "build": "react-scripts build",
+    "dev": "react-scripts start",
+    "build": "CI=false react-scripts build",
     "start": "cd api && npm i && npm run dev",
     "prod": "npm run build && cd api && npm i && npm run start" ,
     "test": "react-scripts test",
