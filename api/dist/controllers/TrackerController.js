@@ -73,7 +73,7 @@ export class TrackerController {
         }
     }
     static async deleteExpense(req, res) {
-        const { expenseId } = req.body;
+        const expenseId = req.params.expenseId;
         const missingInfo = !expenseId;
         const invalidInfo = () => res.status(400).json({ message: 'Invalid information' });
         if (missingInfo) {

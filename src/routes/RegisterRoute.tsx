@@ -1,3 +1,4 @@
+import React from 'react';
 import { Header } from "../components"
 import { Register } from '../pages/Register'
 export default function LoginPage() {

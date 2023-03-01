@@ -1,3 +1,4 @@
+import React from 'react';
 import Box from "@mui/material/Box";
 import { SelectChangeEvent } from "@mui/material/Select";
 import {
@@ -28,7 +29,6 @@ import Backdrop from '@mui/material/Backdrop';
 export const Tracker = () => {
   const expenseService = new ExpenseService();
   const expensesState = useSelector((state: any) => state.expense);
-  const userState = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
   const [tag, setTag] = useState("");
   const [loading, setLoading] = useState(false);

@@ -1,3 +1,4 @@
+import React from 'react';
 import Box from '@mui/material/Box';
 import { useAppDispatch } from '../redux/hooks';
 import { setUser } from '../redux/authSlice'

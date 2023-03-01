@@ -21,7 +21,7 @@ export const expenseSlice = createSlice({
         addExpense: (state, action: PayloadAction<Expense>) => {
             state.expenses.push(action.payload)
 
-            let categoryTotal: CategoryTotal[] = [];
+            const categoryTotal: CategoryTotal[] = [];
             state.expenses.forEach((expense: Expense) => {
                 if (expense.categoryName === "Income"){
                     state.monthIncomeTotal += expense.amount;
@@ -29,7 +29,7 @@ export const expenseSlice = createSlice({
                 }
 
                 state.monthExpenseTotal += expense.amount;
-                let category = categoryTotal.find((categoryTotal: CategoryTotal) => categoryTotal.category === expense.categoryName);
+                const category = categoryTotal.find((categoryTotal: CategoryTotal) => categoryTotal.category === expense.categoryName);
                 if (category) {
                     category.total += expense.amount;
                 } else {
@@ -49,16 +49,16 @@ export const expenseSlice = createSlice({
             state.categories = action.payload
         },
         convertExpensesToRows: (state) => {
-            let filteredExpenses = state.expenses.filter((expense: Expense) => {
-                let expenseDate = expense.expenseDate.substring(0, expense.expenseDate.lastIndexOf("-"))
-                let expenseMonth = parseInt(expenseDate.substring(expenseDate.lastIndexOf("-") + 1));
-                let expenseYear = parseInt(expenseDate.substring(0, expenseDate.lastIndexOf("-")));                
+            const filteredExpenses = state.expenses.filter((expense: Expense) => {
+                const expenseDate = expense.expenseDate.substring(0, expense.expenseDate.lastIndexOf("-"))
+                const expenseMonth = parseInt(expenseDate.substring(expenseDate.lastIndexOf("-") + 1));
+                const expenseYear = parseInt(expenseDate.substring(0, expenseDate.lastIndexOf("-")));                
                 if (expenseMonth === state.month && expenseYear === state.year) return true;
             });
         
-            let expenseRows: ExpenseRow[] = [];
+            const expenseRows: ExpenseRow[] = [];
             filteredExpenses.forEach((expense: Expense) => {
-                let expenseRow = expenseRows.find((expenseRow: ExpenseRow) => expenseRow.category === expense.categoryName);
+                const expenseRow = expenseRows.find((expenseRow: ExpenseRow) => expenseRow.category === expense.categoryName);
                 if (expenseRow) {
                     expenseRow.expenses.push(expense);
                 } else {
@@ -68,7 +68,7 @@ export const expenseSlice = createSlice({
 
             state.expenseRows = expenseRows
         },
-        deleteExpense: (state, action: PayloadAction<Number>) => {
+        deleteExpense: (state, action: PayloadAction<number>) => {
             state.expenses = state.expenses.filter((expense: Expense) => expense.expenseId !== action.payload);
         }
     }

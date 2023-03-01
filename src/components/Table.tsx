@@ -13,10 +13,10 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { ExpenseRow } from "../types";
+import { ExpenseRow, ExpenseForm } from "../types";
 import { FC } from "react";
 
-const getTotal = (expenses: any) => {
+const getTotal = (expenses: ExpenseForm[]) => {
   let total = 0;
   expenses.forEach((expense: any) => {
     if (expense.amount) total += parseFloat(expense.amount);
@@ -118,6 +118,7 @@ export const ExpenseTable: FC<ExpenseTableProps> = ({
             </TableRow>
             {expensesRows.map((row) => (
               <Row
+                key={row.category}
                 category={row.category}
                 expenses={row.expenses}
                 handleDelete={handleDelete}

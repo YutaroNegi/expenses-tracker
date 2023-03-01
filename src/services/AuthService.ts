@@ -16,37 +16,29 @@ const baseUrl = './api/auth';
 
 export class AuthService {
     async login(loginForm: LoginForm) {
-        try {
-            // todo: implement login
-            const response = await axios.post(baseUrl + '/login', {
-                email: loginForm.email,
-                password: loginForm.password
-            });
+        // todo: implement login
+        const response = await axios.post(baseUrl + '/login', {
+            email: loginForm.email,
+            password: loginForm.password
+        });
 
-            localStorage.setItem('user', JSON.stringify(response.data.dataValues));
+        localStorage.setItem('user', JSON.stringify(response.data.dataValues));
 
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
+        return response.data;
     }
 
     async register(registerForm: RegisterForm) {
-        try {
-            const response = await axios.post(baseUrl + '/register', {
-                firstName: registerForm.firstName,
-                lastName: registerForm.lastName,
-                email: registerForm.email,
-                password: registerForm.password
-            });
+        const response = await axios.post(baseUrl + '/register', {
+            firstName: registerForm.firstName,
+            lastName: registerForm.lastName,
+            email: registerForm.email,
+            password: registerForm.password
+        });
 
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
+        return response.data;
     }
 
-    async forgotPassword(email: string) {
+    async forgotPassword() {
         return true
     }
 }
