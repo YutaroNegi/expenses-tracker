@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { RegisterExpenseForm } from '../types';
 
-const baseUrl = './api/tracker';
+const baseUrl = 'https://expenses-trackers.up.railway.app/api';
 
 export class ExpenseService {
     async registerExpense(expenseForm: RegisterExpenseForm) {
