@@ -33,7 +33,7 @@
   "scripts": {
     "dependencies": "npm i && cd api && npm i",
     "dev": "concurrently \"react-scripts start\" \"cd api && npm run dev\"",
-    "build": "CI=false react-scripts build",
+    "build": "CI=false npm i && react-scripts build",
     "start": "cd api && npm i && npm run dev",
     "prod": "npm run build && cd api && npm i && npm run start",
     "test": "react-scripts test",
