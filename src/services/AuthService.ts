@@ -34,6 +34,8 @@ export class AuthService {
             email: registerForm.email,
             password: registerForm.password
         });
+        
+        localStorage.setItem('user', JSON.stringify(response.data.dataValues));
 
         return response.data;
     }

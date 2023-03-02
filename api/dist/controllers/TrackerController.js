@@ -25,6 +25,10 @@ export class TrackerController {
                         attributes: ['categoryName']
                     }]
             });
+            if (!expenses) {
+                const expenseList = [];
+                return res.status(200).json({ expenseList });
+            }
             const expenseList = expenses.map((expense) => {
                 return {
                     expenseId: expense.expenseId,
