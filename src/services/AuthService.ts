@@ -12,7 +12,7 @@ type RegisterForm = {
     password: string;
 };
 
-const baseUrl = process.env.API_URL || 'http://localhost:3000';
+const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
 export class AuthService {
     async login(loginForm: LoginForm) {
