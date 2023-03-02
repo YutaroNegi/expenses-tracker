@@ -3,7 +3,6 @@ import * as dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
-import fs from 'fs';
 import { connect, sync } from './database.js';
 import { authRoutes, trackerRoutes } from './routes/index.js';
 dotenv.config();
@@ -27,12 +26,7 @@ const indexPath = new URL('build/index.html', import.meta.url).pathname;
 const sendIndexHtml = (req, res) => {
     console.log('Sending index.html');
     console.log(indexPath);
-    if (fs.existsSync(indexPath)) {
-        res.sendFile(indexPath);
-    }
-    else {
-        res.status(404).send('File not found');
-    }
+    res.sendFile(indexPath);
 };
 app.get('/tracker', sendIndexHtml);
 app.get('*', sendIndexHtml);

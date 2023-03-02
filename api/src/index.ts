@@ -34,11 +34,7 @@ const sendIndexHtml = (req, res) => {
   console.log('Sending index.html')
   console.log(indexPath);
   
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-  } else {
-    res.status(404).send('File not found');
-  }
+  res.sendFile(indexPath);
 };
 
 app.get('/tracker', sendIndexHtml);
