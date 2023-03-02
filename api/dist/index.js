@@ -23,24 +23,17 @@ app.get('/', (req, res) => {
 app.get('/health', (req, res) => {
     res.sendStatus(200);
 });
-app.get('/tracker', (req, res) => {
-    const indexPath = path.join(process.cwd(), '..', 'build', 'index.html');
+const indexPath = new URL('build/index.html', import.meta.url).pathname;
+const sendIndexHtml = (req, res) => {
     if (fs.existsSync(indexPath)) {
         res.sendFile(indexPath);
     }
     else {
         res.status(404).send('File not found');
     }
-});
-app.get('*', (req, res) => {
-    const indexPath = path.join(process.cwd(), '..', 'build', 'index.html');
-    if (fs.existsSync(indexPath)) {
-        res.sendFile(indexPath);
-    }
-    else {
-        res.status(404).send('File not found');
-    }
-});
+};
+app.get('/tracker', sendIndexHtml);
+app.get('*', sendIndexHtml);
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 const main = async () => {
     await connect();
