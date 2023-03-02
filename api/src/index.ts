@@ -9,7 +9,7 @@ import { connect, sync } from './database.js'
 import { authRoutes, trackerRoutes } from './routes/index.js'
 dotenv.config()
 
-var corsOptions = {
+const corsOptions = {
     origin: '*',
 }
 
@@ -23,9 +23,9 @@ app.use('/api/tracker', trackerRoutes)
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
-app.get('/*', (req, res) => {
+
+app.get('/tracker', (req, res) => {
   const indexPath = path.join(process.cwd(), '..' ,'build', 'index.html');
-  console.log(indexPath);
   
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
@@ -33,6 +33,17 @@ app.get('/*', (req, res) => {
     res.status(404).send('File not found');
   }
 });
+
+app.get('*', (req, res) => {
+  const indexPath = path.join(process.cwd(), '..' ,'build', 'index.html');
+  
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send('File not found');
+  }
+});
+
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 
