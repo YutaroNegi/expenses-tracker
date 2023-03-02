@@ -1,7 +1,15 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import { Sequelize, DataTypes } from 'sequelize';
-const sequelize = new Sequelize(process.env.POSTGRES_URL);
+const sequelize = new Sequelize(process.env.POSTGRES_URL, {
+    dialect: 'postgres',
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false // You may need to set this to `true` on some systems
+        }
+    }
+});
 const tableName = `expenses_${process.env.PROJECT_NAME}_${process.env.NODE_ENV}`;
 export const Expense = sequelize.define('Expense', {
     expenseId: {

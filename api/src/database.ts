@@ -1,7 +1,15 @@
 import { Sequelize } from 'sequelize';
 import { User, startCategoryTable, Expense, Category } from './models/index.js';
 
-const sequelize = new Sequelize(process.env.POSTGRES_URL);
+const sequelize = new Sequelize(process.env.POSTGRES_URL, {
+  dialect: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false // You may need to set this to `true` on some systems
+    }
+  }
+});
 
 export const sync = async () => {
     try {   
@@ -10,10 +18,9 @@ export const sync = async () => {
         Expense.belongsTo(User, { foreignKey: 'fkUserId' });
         User.hasMany(Expense, { foreignKey: 'fkUserId' });
         
+        await startCategoryTable();
         await User.sync();
         await Expense.sync();
-        await startCategoryTable();
-
         
         console.log('Database synced successfully');
     } catch (error) {

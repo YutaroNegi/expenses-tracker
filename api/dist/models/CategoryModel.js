@@ -1,7 +1,15 @@
 import * as dotenv from 'dotenv';
 import { Sequelize, DataTypes } from 'sequelize';
 dotenv.config();
-const sequelize = new Sequelize(process.env.POSTGRES_URL);
+const sequelize = new Sequelize(process.env.POSTGRES_URL, {
+    dialect: 'postgres',
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false // You may need to set this to `true` on some systems
+        }
+    }
+});
 const defaultCategories = [
     { categoryName: 'Grocery' },
     { categoryName: 'House' },
