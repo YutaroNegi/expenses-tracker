@@ -120,7 +120,7 @@ export const Tracker = () => {
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <DateSelector/>
-      <Input onChange={handleInputChange} name="expenseName" label="Expense" />
+      <Input onChange={handleInputChange} name="expenseName" label="Name" />
       <Input
         onChange={handleInputChange}
         name="amount"
