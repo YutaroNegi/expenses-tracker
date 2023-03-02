@@ -35,7 +35,7 @@
     "dependencies": "npm i && cd api && npm i",
     "dev": "concurrently \"react-scripts start\" \"cd api && npm run dev\"",
     "build": "react-scripts build",
-    "start": "cd api && npm i && npm run start"
+    "start": "cd api && npm run start"
   },
   "eslintConfig": {
     "extends": [
