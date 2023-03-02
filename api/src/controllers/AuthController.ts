@@ -17,7 +17,7 @@ export class AuthController {
         }
 
         try {
-            const user : any = await User.findOne({ where: { email } });
+            const user : any = await User.findOne({ where: { email: email.toLowerCase() } });
             if (!user) {
                 return invalidCredentials();
             }
@@ -50,7 +50,7 @@ export class AuthController {
       
         try {
           const user = await User.create({
-            email,
+            email: email.toLowerCase(),
             password: hash,
             firstName,
             lastName

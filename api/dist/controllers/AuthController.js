@@ -10,7 +10,7 @@ export class AuthController {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
         try {
-            const user = await User.findOne({ where: { email } });
+            const user = await User.findOne({ where: { email: email.toLowerCase() } });
             if (!user) {
                 return invalidCredentials();
             }
@@ -38,7 +38,7 @@ export class AuthController {
         const hash = bcrypt.hashSync(password, saltRounds);
         try {
             const user = await User.create({
-                email,
+                email: email.toLowerCase(),
                 password: hash,
                 firstName,
                 lastName
