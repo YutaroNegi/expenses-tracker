@@ -31,6 +31,9 @@ app.get('/health', (req, res) => {
 const indexPath = new URL('build/index.html', import.meta.url).pathname;
 
 const sendIndexHtml = (req, res) => {
+  console.log('Sending index.html')
+  console.log(indexPath);
+  
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {
