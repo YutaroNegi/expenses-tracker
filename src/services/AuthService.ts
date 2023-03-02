@@ -12,7 +12,7 @@ type RegisterForm = {
     password: string;
 };
 
-const baseUrl = 'https://expenses-trackers.up.railway.app/api';
+const baseUrl = process.env.API_URL || 'http://localhost:3000';
 
 export class AuthService {
     async login(loginForm: LoginForm) {
