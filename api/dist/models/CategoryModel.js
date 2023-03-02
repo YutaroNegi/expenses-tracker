@@ -19,6 +19,7 @@ const defaultCategories = [
     { categoryName: 'Others' },
     { categoryName: 'Entertainment' },
     { categoryName: 'Bills' },
+    { categoryName: 'Garden' },
     { categoryName: 'Transportation' },
     { categoryName: 'Income' },
 ];

@@ -102,7 +102,7 @@ export const Tracker = () => {
       return;
     }
 
-    if (expenseForm.fkCategoryId === 10){
+    if (expenseForm.fkCategoryId === 11){
       expenseForm.amount = expenseForm.amount * -1;
     }
 
