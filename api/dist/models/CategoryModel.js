@@ -3,15 +3,16 @@ import { Sequelize, DataTypes } from 'sequelize';
 dotenv.config();
 const sequelize = new Sequelize(process.env.POSTGRES_URL);
 const defaultCategories = [
-    { categoryName: 'Food' },
-    { categoryName: 'Transportation' },
-    { categoryName: 'Entertainment' },
-    { categoryName: 'Shopping' },
-    { categoryName: 'Utilities' },
+    { categoryName: 'Grocery' },
+    { categoryName: 'House' },
     { categoryName: 'Farmacy' },
+    { categoryName: 'Restaurant' },
+    { categoryName: 'Delivery' },
+    { categoryName: 'Others' },
+    { categoryName: 'Entertainment' },
     { categoryName: 'Bills' },
+    { categoryName: 'Transportation' },
     { categoryName: 'Income' },
-    { categoryName: 'Other' }
 ];
 const tableName = `categories_${process.env.PROJECT_NAME}_${process.env.NODE_ENV}`;
 export const Category = sequelize.define('Category', {
