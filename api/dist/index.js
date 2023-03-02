@@ -20,6 +20,9 @@ app.use('/api/tracker', trackerRoutes);
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
+app.get('/health', (req, res) => {
+    res.sendStatus(200);
+});
 app.get('/tracker', (req, res) => {
     const indexPath = path.join(process.cwd(), '..', 'build', 'index.html');
     if (fs.existsSync(indexPath)) {
