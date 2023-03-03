@@ -21,6 +21,7 @@
     "axios": "^1.2.4",
     "concurrently": "^7.6.0",
     "dotenv": "^16.0.3",
+    "express-rate-limit": "^6.7.0",
     "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
