@@ -10,6 +10,7 @@ export type RegisterExpenseForm = {
     expenseName: string;
     expenseDate: string;
     fkCategoryId: number;
+    installments: number;
 };
 
 

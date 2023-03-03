@@ -38,6 +38,7 @@ export const Tracker = () => {
     expenseName: "",
     expenseDate: "",
     fkCategoryId: 0,
+    installments: 0,
   });
 
 
@@ -91,12 +92,26 @@ export const Tracker = () => {
     setExpenseForm({ ...expenseForm, fkCategoryId: parseInt(event.target.value)});
   };
 
+  const verifyInstallments = (installments: number) => {
+    if (installments < 1) {
+      toast.error("Installments must be greater than 0");
+      return false;
+    }
+
+    // check if installments is not decimal
+    if (installments % 1 !== 0) {
+      toast.error("Installments must be an integer");
+      return false;
+    }
+  }
+
   const handleAddExpense = async () => {
     if (
       !expenseForm.expenseName ||
       !expenseForm.amount ||
       !expenseForm.expenseDate ||
-      !expenseForm.fkCategoryId
+      !expenseForm.fkCategoryId ||
+      !expenseForm.installments
     ) {
       toast.error("Please fill all the fields");
       return;
@@ -106,12 +121,30 @@ export const Tracker = () => {
       expenseForm.amount = expenseForm.amount * -1;
     }
 
+    if (verifyInstallments(expenseForm.installments) === false) {
+      return;
+    }
+    
     setLoading(true);
-    const expenseResponse = await expenseService.registerExpense(expenseForm);
-    dispatch(addExpense(expenseResponse));
-    dispatch(convertExpensesToRows());
-    await getData();
-    toast.success("Expense registered successfully");
+    
+    try {
+      await expenseService.registerExpense(expenseForm);
+      toast.success("Expense registered successfully");
+    } catch (error) {
+      toast.error("Error registering expense");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await getData();
+    } catch (error) {
+      toast.error("Error loading expenses");
+      setLoading(false);
+      return;
+    }
+
+
     setLoading(false);
   };
 
@@ -126,6 +159,13 @@ export const Tracker = () => {
         name="amount"
         type="number"
         label="Amount"
+      />
+
+      <Input
+        onChange={handleInputChange}
+        name="installments"
+        type="number"
+        label="Installments"
       />
 
       <Input onChange={handleInputChange} name="expenseDate" type="date" label="" />
