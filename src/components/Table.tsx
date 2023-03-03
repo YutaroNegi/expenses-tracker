@@ -68,7 +68,7 @@ const Row = (props: any) => {
                   {expenses.map((expense: any) => (
                     <TableRow key={expense.expenseId}>
                       <TableCell>{expense.expenseName}</TableCell>
-                      <TableCell>{expense.amount}</TableCell>
+                      <TableCell>{parseFloat(expense.amount).toFixed(2)}</TableCell>
                       <TableCell>{formatDate(expense.expenseDate)}</TableCell>
                       <TableCell
                         onClick={() => handleDelete(expense.expenseId)}

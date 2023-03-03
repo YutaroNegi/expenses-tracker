@@ -5,20 +5,20 @@ const baseUrl = process.env.REACT_APP_API_URL + '/tracker' || 'http://localhost:
 
 export class ExpenseService {
     async registerExpense(expenseForm: RegisterExpenseForm) {
+        // const expenseDateObj = new Date(expenseForm.expenseDate);
+        // expenseDateObj.setMonth(expenseDateObj.getMonth() + 1);
+        // const installmentDate = expenseDateObj.toISOString().slice(0, 10);
+
+        // console.log(installmentDate);
+        // return
+
         const user = JSON.parse(localStorage.getItem('user') || '{}');
-        const response = await axios.post(baseUrl + '/expense', {
+        await axios.post(baseUrl + '/expense', {
             ...expenseForm,
             fkUserId: user.userId
-        });            
+        });   
         
-        return {
-            expenseId: response.data.expense.expenseId,
-            expenseDate: response.data.expense.expenseDate,
-            amount: response.data.expense.amount,
-            categoryName: response.data.expense.categoryName,
-            fkUserId: response.data.expense.fkUserId,
-            expenseName: response.data.expense.expenseName
-        }
+        return;
     }
 
     async getExpenses(userId: number) {

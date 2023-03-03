@@ -55,8 +55,8 @@ export class TrackerController {
   }
 
   static async createExpense(req: Request, res: Response) {
-    const { fkUserId, fkCategoryId, amount, expenseDate, expenseName } = req.body;
-    const missingInfo = !fkUserId || !fkCategoryId || !amount || !expenseDate || !expenseName;
+    const { fkUserId, fkCategoryId, amount, expenseDate, expenseName, installments } = req.body;
+    const missingInfo = !fkUserId || !fkCategoryId || !amount || !expenseDate || !expenseName || !installments;
     const invalidInfo = () => res.status(400).json({ message: 'Invalid information' });
 
     if (missingInfo) {
@@ -64,8 +64,26 @@ export class TrackerController {
     }
 
     try {
-      const expense = await Expense.create({ fkUserId, fkCategoryId, amount, expenseDate, expenseName });
-      return res.status(201).json({ expense });
+      if (installments === 1) {
+        await Expense.create({ fkUserId, fkCategoryId, amount, expenseDate, expenseName });
+        return res.status(201).json({ message: 'Expense created' });
+      }else{
+        for (let i = 0; i < Number(installments); i++) {
+          // setting the month of the expenseDate to the current month + i
+          const expenseDateObj = new Date(expenseDate);
+          expenseDateObj.setMonth(expenseDateObj.getMonth() + i);
+          const installmentDate = expenseDateObj.toISOString().slice(0, 10);
+
+          // setting expense name to the current expense name + i
+          const installmentName = expenseName + ' | ' + (i + 1);
+
+          // setting expense value to the current expense value / installments
+          const installmentAmount = (amount / installments).toFixed(2);
+
+          await Expense.create({ fkUserId, fkCategoryId, amount: installmentAmount, expenseDate: installmentDate, expenseName: installmentName });
+        }
+        return res.status(201).json({ message: 'Expenses created' });
+      }
     } catch (error) {
       return res.status(500).json({ message: 'Error creating expense', error });
     }
