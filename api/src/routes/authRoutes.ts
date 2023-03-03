@@ -8,7 +8,6 @@ dotenv.config()
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
     max: 5, // número máximo de solicitações por IP
-    // english msg
     message: "Too many accounts created from this IP, please try again after an hour"
 });
 
