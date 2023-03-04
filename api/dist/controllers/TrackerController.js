@@ -1,5 +1,6 @@
 import { Category } from "../models/CategoryModel.js";
 import { Expense } from "../models/ExpenseModel.js";
+import jwt from "jsonwebtoken";
 export class TrackerController {
     static async listCategories(req, res) {
         try {
@@ -105,6 +106,29 @@ export class TrackerController {
         }
         catch (error) {
             return res.status(500).json({ message: 'Error deleting expense', error });
+        }
+    }
+    static async verifyToken(req, res, next) {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return res.status(401).json({
+                message: 'No authorization header',
+            });
+        }
+        const token = authHeader;
+        if (!token) {
+            return res.status(401).json({
+                message: 'No token provided',
+            });
+        }
+        try {
+            jwt.verify(token, process.env.JWT_SECRET);
+            next();
+        }
+        catch (error) {
+            return res.status(401).json({
+                message: 'Invalid token',
+            });
         }
     }
 }

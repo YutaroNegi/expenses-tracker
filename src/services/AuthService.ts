@@ -22,7 +22,8 @@ export class AuthService {
             password: loginForm.password
         });
         localStorage.setItem('user', JSON.stringify(response.data.dataValues));
-
+        localStorage.setItem('token', response.data.token);
+        
         return response.data;
     }
 
@@ -34,7 +35,8 @@ export class AuthService {
             password: registerForm.password
         });
         localStorage.setItem('user', JSON.stringify(response.data));
-
+        localStorage.setItem('token', response.data.token);
+        
         return response.data;
     }
 

@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { User } from "../models/UserModel.js";
 const saltRounds = 10;
 export class AuthController {
@@ -18,7 +19,10 @@ export class AuthController {
             if (!isValidPassword) {
                 return invalidCredentials();
             }
-            return res.status(200).json({ ...user });
+            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                expiresIn: '1d',
+            });
+            return res.status(200).json({ ...user, token });
         }
         catch (error) {
             // console.log('Error logging in user', error);
@@ -43,8 +47,11 @@ export class AuthController {
                 firstName,
                 lastName
             });
+            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                expiresIn: '30d',
+            });
             return res.status(201).json({
-                ...user.toJSON()
+                ...user.toJSON(), token
             });
         }
         catch (error) {

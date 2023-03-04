@@ -12,7 +12,6 @@ import { ChangeEvent } from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  addExpense,
   loadCategories,
   loadExpenses,
   convertExpensesToRows,
@@ -25,8 +24,10 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Backdrop from '@mui/material/Backdrop';
+import { useNavigate } from 'react-router-dom';
 
 export const Tracker = () => {
+  const navigate = useNavigate();
   const expenseService = new ExpenseService();
   const expensesState = useSelector((state: any) => state.expense);
   const dispatch = useDispatch();
@@ -49,20 +50,36 @@ export const Tracker = () => {
   const getData = async () => {
     setScreenLoading(true);
 
-    const user = JSON.parse(localStorage.getItem("user") || "{}");      
-    const categories = await expenseService.getCategories();
-    const expenses = await expenseService.getExpenses(user.userId);
-    const currentDate = {
-      month: new Date().getMonth() + 1,
-      year: new Date().getFullYear(),
+    const user = JSON.parse(localStorage.getItem("user") || "{}");    
+    const token = localStorage.getItem("token");
+    
+    if (!token || !user) {
+      setScreenLoading(false);
+      navigate('/login');
+      return;
     }
+    
+    try {
+      const categories = await expenseService.getCategories();
+      const expenses = await expenseService.getExpenses(user.userId);
 
-    dispatch(loadCategories(categories));
-    dispatch(updateDate(currentDate));
-    dispatch(loadExpenses(expenses));
-    dispatch(convertExpensesToRows());
-
-    setScreenLoading(false);
+      const currentDate = {
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear(),
+      }
+  
+      dispatch(loadCategories(categories));
+      dispatch(updateDate(currentDate));
+      dispatch(loadExpenses(expenses));
+      dispatch(convertExpensesToRows());
+  
+      setScreenLoading(false)
+    } catch (error) {
+      toast.warning("You must be logged in");
+      setScreenLoading(false);
+      navigate('/login');
+      return;
+    }
   };
 
   const handleDelete = async (id: number) => {

@@ -5,13 +5,6 @@ const baseUrl = process.env.REACT_APP_API_URL + '/tracker' || 'http://localhost:
 
 export class ExpenseService {
     async registerExpense(expenseForm: RegisterExpenseForm) {
-        // const expenseDateObj = new Date(expenseForm.expenseDate);
-        // expenseDateObj.setMonth(expenseDateObj.getMonth() + 1);
-        // const installmentDate = expenseDateObj.toISOString().slice(0, 10);
-
-        // console.log(installmentDate);
-        // return
-
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         await axios.post(baseUrl + '/expense', {
             ...expenseForm,
@@ -22,6 +15,8 @@ export class ExpenseService {
     }
 
     async getExpenses(userId: number) {
+        const token = localStorage.getItem('token');
+        axios.defaults.headers.common['Authorization'] = token;
         const response = await axios.get(baseUrl + '/expenses/' + userId);
             
         return response.data.expenseList;

@@ -11,7 +11,7 @@ const limiter = rateLimit({
     message: "Too many accounts created from this IP, please try again after an hour"
 });
 
-router.post('/login', limiter ,AuthController.login)
+router.post('/login', limiter, AuthController.login)
 router.post('/register', AuthController.register)
 router.post('/forgot-password', AuthController.forgotPassword)
 

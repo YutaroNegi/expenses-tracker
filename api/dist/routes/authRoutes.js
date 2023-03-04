@@ -7,7 +7,7 @@ dotenv.config();
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 5,
-    message: "Muitas tentativas de login. Tente novamente mais tarde."
+    message: "Too many accounts created from this IP, please try again after an hour"
 });
 router.post('/login', limiter, AuthController.login);
 router.post('/register', AuthController.register);

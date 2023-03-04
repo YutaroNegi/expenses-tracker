@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Category } from "../models/CategoryModel.js";
 import { Expense } from "../models/ExpenseModel.js";
+import jwt from "jsonwebtoken";
 
 
 export class TrackerController {
@@ -67,7 +68,7 @@ export class TrackerController {
       if (installments === 1) {
         await Expense.create({ fkUserId, fkCategoryId, amount, expenseDate, expenseName });
         return res.status(201).json({ message: 'Expense created' });
-      }else{
+      } else {
         for (let i = 0; i < Number(installments); i++) {
           // setting the month of the expenseDate to the current month + i
           const expenseDateObj = new Date(expenseDate);
@@ -120,6 +121,25 @@ export class TrackerController {
       return res.status(200).json({ expense });
     } catch (error) {
       return res.status(500).json({ message: 'Error deleting expense', error });
+    }
+  }
+
+  static async verifyToken(req: Request, res: Response, next: any) {
+    const token = req.headers.authorization;
+
+    if (!token) {
+      return res.status(401).json({
+        message: 'No token provided',
+      });
+    }
+
+    try {
+      jwt.verify(token, process.env.JWT_SECRET);
+      next();
+    } catch (error) {
+      return res.status(401).json({
+        message: 'Invalid token',
+      });
     }
   }
 }
