@@ -16,7 +16,7 @@ const corsOptions = {
 const app = express();
 app.use(cors(corsOptions));
 const PORT = process.env.PORT || 3000;
-app.use(express.static(path.join(process.cwd(), 'build')));
+app.use(express.static(path.join(process.cwd(), 'front', 'build')));
 app.use(bodyParser.json())
 app.use('/api/auth', authRoutes)
 app.use('/api/tracker', trackerRoutes)
@@ -28,7 +28,7 @@ app.get('/health', (req, res) => {
   res.sendStatus(200)
 })
 
-const indexPath = path.join(process.cwd(), 'build', 'index.html');
+const indexPath = path.join(process.cwd(), 'front', 'build', 'index.html');
 
 const sendIndexHtml = (req, res) => {
   console.log('Sending index.html')
