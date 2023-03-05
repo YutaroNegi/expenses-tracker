@@ -18,7 +18,7 @@ import '@fontsource/roboto/700.css';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LoginPage />,
+    element: <TrackerPage/>,
   },
   {
     path: "/login",
