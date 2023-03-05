@@ -20,9 +20,6 @@ app.use(express.static(path.join(process.cwd(), 'front', 'build')));
 app.use(bodyParser.json())
 app.use('/api/auth', authRoutes)
 app.use('/api/tracker', trackerRoutes)
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
 
 app.get('/health', (req, res) => {
   res.sendStatus(200)
