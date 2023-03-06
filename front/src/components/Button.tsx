@@ -9,7 +9,6 @@ type ButtonProps = {
     width?: string;
     to?: string;
     label: string
-
 } & LoadingButtonProps
 
 export const Button: FC<ButtonProps> = ({

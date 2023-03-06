@@ -33,6 +33,20 @@ export type categories = {
     categories: Category[];
 }
 
+export type Datasets = {
+    label: string;
+    data: number[];
+    backgroundColor: string[];
+    borderColor: string[];
+    borderWidth: number;
+}
+
+export type PieChart = {
+    labels: string[];
+    dataSets: Datasets;
+}
+
+
 export type ExpenseState = {
     month: number;
     year: number;
@@ -42,6 +56,8 @@ export type ExpenseState = {
     categories: Category[];
     monthExpenseTotal: number;
     monthIncomeTotal: number;
+    pieChart: PieChart;
+
 }
 
 export type ExpenseRow = {

@@ -5,3 +5,5 @@ export { Input } from './Input';
 export { Button } from './Button';
 export { ExpenseTable } from './Table';
 export { DateSelector } from './DateSelector';
+export { Modal } from './Modal';
+export { PieChart } from './PieChart';

@@ -1,2 +1,2 @@
-export type { Expense, ExpenseForm, ExpenseState, CategoryTotal, ExpenseRow , ExpenseDate, RegisterExpenseForm} from './Expense';
+export type { Expense, ExpenseForm, ExpenseState, CategoryTotal, ExpenseRow , ExpenseDate, RegisterExpenseForm, Datasets, PieChart, } from './Expense';
 export type { User, AuthState, LoginForm, RegisterForm } from './Auth';

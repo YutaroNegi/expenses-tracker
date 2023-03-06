@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Box from "@mui/material/Box";
 import { SelectChangeEvent } from "@mui/material/Select";
 import {
@@ -7,6 +7,8 @@ import {
   Button,
   ExpenseTable,
   DateSelector,
+  Modal,
+  PieChart,
 } from "../components/index";
 import { ChangeEvent } from "react";
 import { useState } from "react";
@@ -16,21 +18,22 @@ import {
   loadExpenses,
   convertExpensesToRows,
   deleteExpense,
-  updateDate
+  updateDate,
 } from "../redux/expenseSlice";
 import { ExpenseService } from "../services/ExpenseService";
 import { RegisterExpenseForm } from "../types";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import Backdrop from '@mui/material/Backdrop';
-import { useNavigate } from 'react-router-dom';
+import Backdrop from "@mui/material/Backdrop";
+import { useNavigate } from "react-router-dom";
 
 export const Tracker = () => {
   const navigate = useNavigate();
   const expenseService = new ExpenseService();
   const expensesState = useSelector((state: any) => state.expense);
   const dispatch = useDispatch();
+  const [openModal, setOpenModal] = useState(false);
   const [tag, setTag] = useState("");
   const [loading, setLoading] = useState(false);
   const [screenLoading, setScreenLoading] = useState(false);
@@ -42,7 +45,6 @@ export const Tracker = () => {
     installments: 0,
   });
 
-
   useEffect(() => {
     getData();
   }, []);
@@ -50,15 +52,15 @@ export const Tracker = () => {
   const getData = async () => {
     setScreenLoading(true);
 
-    const user = JSON.parse(localStorage.getItem("user") || "{}");    
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
     const token = localStorage.getItem("token");
-    
+
     if (!token || !user) {
       setScreenLoading(false);
-      navigate('/login');
+      navigate("/login");
       return;
     }
-    
+
     try {
       const categories = await expenseService.getCategories();
       const expenses = await expenseService.getExpenses(user.userId);
@@ -66,18 +68,18 @@ export const Tracker = () => {
       const currentDate = {
         month: new Date().getMonth() + 1,
         year: new Date().getFullYear(),
-      }
-  
+      };
+
       dispatch(loadCategories(categories));
       dispatch(updateDate(currentDate));
       dispatch(loadExpenses(expenses));
       dispatch(convertExpensesToRows());
-  
-      setScreenLoading(false)
+
+      setScreenLoading(false);
     } catch (error) {
       toast.warning("You must be logged in");
       setScreenLoading(false);
-      navigate('/login');
+      navigate("/login");
       return;
     }
   };
@@ -106,7 +108,10 @@ export const Tracker = () => {
 
   const handleDropdownChange = (event: SelectChangeEvent) => {
     setTag(event.target.value as string);
-    setExpenseForm({ ...expenseForm, fkCategoryId: parseInt(event.target.value)});
+    setExpenseForm({
+      ...expenseForm,
+      fkCategoryId: parseInt(event.target.value),
+    });
   };
 
   const verifyInstallments = (installments: number) => {
@@ -120,7 +125,7 @@ export const Tracker = () => {
       toast.error("Installments must be an integer");
       return false;
     }
-  }
+  };
 
   const handleAddExpense = async () => {
     if (
@@ -134,16 +139,16 @@ export const Tracker = () => {
       return;
     }
 
-    if (expenseForm.fkCategoryId === 11){
+    if (expenseForm.fkCategoryId === 11) {
       expenseForm.amount = expenseForm.amount * -1;
     }
 
     if (verifyInstallments(expenseForm.installments) === false) {
       return;
     }
-    
+
     setLoading(true);
-    
+
     try {
       await expenseService.registerExpense(expenseForm);
       toast.success("Expense registered successfully");
@@ -161,15 +166,18 @@ export const Tracker = () => {
       return;
     }
 
-
     setLoading(false);
+  };
+
+  const handleOpenChart = () => {
+    setOpenModal(true);
   };
 
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <DateSelector/>
+      <DateSelector />
       <Input onChange={handleInputChange} name="expenseName" label="Name" />
       <Input
         onChange={handleInputChange}
@@ -185,7 +193,12 @@ export const Tracker = () => {
         label="Installments"
       />
 
-      <Input onChange={handleInputChange} name="expenseDate" type="date" label="" />
+      <Input
+        onChange={handleInputChange}
+        name="expenseDate"
+        type="date"
+        label=""
+      />
 
       <Dropdown
         onSelectedChange={handleDropdownChange}
@@ -202,6 +215,12 @@ export const Tracker = () => {
         label="Register"
       />
 
+      <Button
+        onClick={() => handleOpenChart()}
+        variant="contained"
+        label="Open Pie Chart"
+      />
+
       <ExpenseTable
         expensesRows={expensesState.expenseRows}
         handleDelete={handleDelete}
@@ -215,6 +234,13 @@ export const Tracker = () => {
           <CircularProgress color="inherit" />
         </Backdrop>
       </div>
+
+      <Modal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        title=""
+        content={PieChart(expensesState.pieChart)}
+      />
     </Box>
   );
 };
