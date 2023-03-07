@@ -1,23 +1,22 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { useSelector, useDispatch } from "react-redux";
-import { convertExpensesToPieChart } from "../redux/expenseSlice";
+import { useSelector } from "react-redux";
+import { If } from "./index";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const PieChart: FC = () => {
-  const dispatch = useDispatch();
   const expense = useSelector((state: any) => state.expense);
 
-  useEffect(() => {
-    dispatch(convertExpensesToPieChart());
-
-    console.log(expense);
-    
-    
-  }, []);
-
   return (
-    <>Hello</>
-  )
+    <>
+      <If condition={expense.pieChart.labels.length > 0}>
+        <Pie data={expense.pieChart} />
+      </If>
+
+      <If condition={expense.pieChart.length < 0}>
+        <div>There is no data to display</div>
+      </If>
+    </>
+  );
 };

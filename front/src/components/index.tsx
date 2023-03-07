@@ -7,3 +7,4 @@ export { ExpenseTable } from './Table';
 export { DateSelector } from './DateSelector';
 export { Modal } from './Modal';
 export { PieChart } from './PieChart';
+export { If } from './If';

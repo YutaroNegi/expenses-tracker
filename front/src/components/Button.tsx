@@ -25,7 +25,6 @@ export const Button: FC<ButtonProps> = ({
             <Box sx={{ marginTop: marginTop, width: width }}>
                 <LoadingButton 
                 fullWidth 
-                loadingPosition="start" 
                 loading={loading} 
                 variant={variant} 
                 {...props}>

@@ -43,7 +43,7 @@ export type Datasets = {
 
 export type PieChart = {
     labels: string[];
-    dataSets: Datasets;
+    datasets: Datasets[];
 }
 
 

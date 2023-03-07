@@ -10,7 +10,7 @@ type DropdownTypes = {
     options: Option[];
     value: string;
     onSelectedChange: (event: SelectChangeEvent) => void;
-    key: string
+    id: string
     label: string;
     marginTop?: string;
     width?: string;
@@ -21,15 +21,15 @@ type Option = {
     categoryName: string;
 }
 
-export const Dropdown: FC<DropdownTypes> = ({ options, value, onSelectedChange, key, label, marginTop = '1.5em', width = '15em' }) => {
+export const Dropdown: FC<DropdownTypes> = ({ options, value, onSelectedChange, id, label, marginTop = '1.5em', width = '15em' }) => {
     return (
         <Box sx={{ marginTop: marginTop, width: width }}>
             <FormControl fullWidth size="small">
-                <InputLabel id={key}>Tag</InputLabel>
+                <InputLabel id={id}>Tag</InputLabel>
                 <Select
-                    labelId={key}
-                    id={key}
-                    name={key}
+                    labelId={id}
+                    id={id}
+                    name={id}
                     value={value}
                     label={label}
                     onChange={onSelectedChange}

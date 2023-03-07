@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './store'
-import type { Expense, CategoryTotal, ExpenseState, Category, ExpenseRow, ExpenseDate, PieChart } from '../types/Expense'
+import type { Expense, CategoryTotal, ExpenseState, Category, ExpenseRow, ExpenseDate, Datasets } from '../types/Expense'
 
 
 const initialState: ExpenseState = {
@@ -14,13 +14,7 @@ const initialState: ExpenseState = {
     monthIncomeTotal: 0,
     pieChart: {
         labels: [],
-        dataSets: {
-            label: '',
-            data: [],
-            backgroundColor: [],
-            borderColor: [],
-            borderWidth: 1
-        }
+        datasets: []
     }
 }
 
@@ -80,46 +74,33 @@ export const expenseSlice = createSlice({
         },
         convertExpensesToPieChart: (state) => {
             const getRandomColor = () => {
-                const letters = '0123456789ABCDEF';
-                let color = '#';
-
-                for (let i = 0; i < 6; i++) {
-                    color += letters[Math.floor(Math.random() * 16)];
-                }
-
-                return color;
+                const r = Math.floor(Math.random() * 256);
+                const g = Math.floor(Math.random() * 256);
+                const b = Math.floor(Math.random() * 256);
+                const a = 0.2;
+                return `rgba(${r}, ${g}, ${b}, ${a})`;
             }
 
             const dataToTransform = state.expenseRows.map((expenseRow: ExpenseRow) => {
-                console.log(expenseRow);
-                
-                return { category: expenseRow.category, total: expenseRow.expenses.reduce((total: number, expense: Expense) => total + expense.amount, 0) }
+                const total = expenseRow.expenses.reduce((total: number, expense: Expense) => total + expense.amount, 0);
+                return { category: expenseRow.category, total: total }
             });
 
-            const backgroundColor: string[] = [];
-            const borderColor: string[] = [];
-            const labels: string[] = [];
-            const data: number[] = [];
+            const labels = dataToTransform.map((data: CategoryTotal) => data.category);
+            const data = dataToTransform.map((data: CategoryTotal) => data.total);
+            const backgroundColor = dataToTransform.map(() => getRandomColor());
+            const borderColor = dataToTransform.map(() => getRandomColor());
 
-            dataToTransform.forEach((categoryTotal: CategoryTotal) => {
-                backgroundColor.push(getRandomColor());
-                borderColor.push(getRandomColor());
-                labels.push(categoryTotal.category);
-                data.push(categoryTotal.total);
-            }
-            );
+            const dataSets: Datasets[] = [{
+                label: "Expense",
+                data: data,
+                backgroundColor: backgroundColor,
+                borderColor: borderColor,
+                borderWidth: 1
+            }];
 
-            state.pieChart = {
-                labels: labels,
-                dataSets: {
-                    label: 'Expense',
-                    data: data,
-                    backgroundColor: backgroundColor,
-                    borderColor: borderColor,
-                    borderWidth: 1
-                }
-
-            }
+            state.pieChart.labels = labels;
+            state.pieChart.datasets = dataSets;
         },
         deleteExpense: (state, action: PayloadAction<number>) => {
             state.expenses = state.expenses.filter((expense: Expense) => expense.expenseId !== action.payload);

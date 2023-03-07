@@ -19,6 +19,7 @@ import {
   convertExpensesToRows,
   deleteExpense,
   updateDate,
+  convertExpensesToPieChart
 } from "../redux/expenseSlice";
 import { ExpenseService } from "../services/ExpenseService";
 import { RegisterExpenseForm } from "../types";
@@ -170,7 +171,9 @@ export const Tracker = () => {
   };
 
   const handleOpenChart = () => {
+    dispatch(convertExpensesToPieChart());
     setOpenModal(true);
+    console.log(expensesState.pieChart);
   };
 
   return (
@@ -204,7 +207,7 @@ export const Tracker = () => {
         onSelectedChange={handleDropdownChange}
         options={expensesState.categories}
         value={tag}
-        key="fkCategoryId"
+        id="fkCategoryId"
         label="Category"
       />
 
@@ -218,7 +221,7 @@ export const Tracker = () => {
       <Button
         onClick={() => handleOpenChart()}
         variant="contained"
-        label="Open Pie Chart"
+        label="Pie Chart"
       />
 
       <ExpenseTable
