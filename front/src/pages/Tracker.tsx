@@ -50,6 +50,14 @@ export const Tracker = () => {
     getData();
   }, []);
 
+  const listExpenses = async () => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const expenses = await expenseService.getExpenses(user.userId);
+    dispatch(loadExpenses(expenses));
+    dispatch(convertExpensesToRows());
+  }
+
+
   const getData = async () => {
     setScreenLoading(true);
 
@@ -64,7 +72,6 @@ export const Tracker = () => {
 
     try {
       const categories = await expenseService.getCategories();
-      const expenses = await expenseService.getExpenses(user.userId);
 
       const currentDate = {
         month: new Date().getMonth() + 1,
@@ -73,8 +80,7 @@ export const Tracker = () => {
 
       dispatch(loadCategories(categories));
       dispatch(updateDate(currentDate));
-      dispatch(loadExpenses(expenses));
-      dispatch(convertExpensesToRows());
+      await listExpenses();
 
       setScreenLoading(false);
     } catch (error) {
@@ -160,7 +166,7 @@ export const Tracker = () => {
     }
 
     try {
-      await getData();
+      await listExpenses();
     } catch (error) {
       toast.error("Error loading expenses");
       setLoading(false);
