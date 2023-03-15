@@ -18,6 +18,17 @@ const initialState: ExpenseState = {
     }
 }
 
+const defaultColors = [
+    "#f44336",
+    "#e91e63",
+    "#9c27b0",
+    "#3f51b5",
+    "#2196f3",
+    "#4caf50",
+    "#ffeb3b",
+    "#ff5722",
+]
+
 export const expenseSlice = createSlice({
     name: 'expense',
     initialState,
@@ -74,11 +85,14 @@ export const expenseSlice = createSlice({
         },
         convertExpensesToPieChart: (state) => {
             const getRandomColor = () => {
-                const r = Math.floor(Math.random() * 256);
-                const g = Math.floor(Math.random() * 256);
-                const b = Math.floor(Math.random() * 256);
-                const a = 0.2;
-                return `rgba(${r}, ${g}, ${b}, ${a})`;
+                const randomIndex = Math.floor(Math.random() * defaultColors.length);
+                return defaultColors[randomIndex];
+            }
+
+            const getColorByIndex = (index: number) => {
+                if (index < defaultColors.length) return defaultColors[index];
+
+                return getRandomColor();
             }
 
             const dataToTransform = state.expenseRows.map((expenseRow: ExpenseRow) => {
@@ -88,8 +102,8 @@ export const expenseSlice = createSlice({
 
             const labels = dataToTransform.map((data: CategoryTotal) => data.category);
             const data = dataToTransform.map((data: CategoryTotal) => data.total);
-            const backgroundColor = dataToTransform.map(() => getRandomColor());
-            const borderColor = dataToTransform.map(() => getRandomColor());
+            const backgroundColor = dataToTransform.map((data: CategoryTotal, index: number) => getColorByIndex(index));
+            const borderColor = dataToTransform.map((data: CategoryTotal, index: number) => getColorByIndex(index));
 
             const dataSets: Datasets[] = [{
                 label: "Expense",

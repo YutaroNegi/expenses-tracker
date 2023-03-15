@@ -16,10 +16,28 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { ExpenseRow, ExpenseForm } from "../types";
 import { FC } from "react";
 
-const getTotal = (expenses: ExpenseForm[]) => {
+const getCategoryTotal = (expenses: ExpenseForm[]) => {
   let total = 0;
   expenses.forEach((expense: any) => {
     if (expense.amount) total += parseFloat(expense.amount);
+  });
+  
+  return total.toFixed(2);
+};
+
+const getIncomeTotal = (expenses: ExpenseForm[]) => {
+  let total = 0;
+  expenses.forEach((expense: any) => {
+    if (expense.amount && expense.fkCategoryId === 11) total += parseFloat(expense.amount);
+  });
+
+  return total.toFixed(2);
+};
+
+const getTotal = (expenses: ExpenseForm[]) => {
+  let total = 0;
+  expenses.forEach((expense: any) => {
+    if (expense.amount && expense.fkCategoryId !== 11) total += parseFloat(expense.amount);
   });
   
   return total.toFixed(2);
@@ -46,7 +64,7 @@ const Row = (props: any) => {
           </IconButton>
         </TableCell>
         <TableCell align="center">{category}</TableCell>
-        <TableCell align="center">{getTotal(expenses)}</TableCell>
+        <TableCell align="center">{getCategoryTotal(expenses)}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -99,6 +117,8 @@ export const ExpenseTable: FC<ExpenseTableProps> = ({
   handleDelete,
 }) => {
   const total = getTotal(expensesRows.flatMap((row) => row.expenses));
+  const income = getIncomeTotal(expensesRows.flatMap((row) => row.expenses));
+  const diff = (parseFloat(income) - parseFloat(total)).toFixed(2);
   return (
     <Box sx={{ width: "25em", marginTop: "2em" }}>
       <TableContainer component={Paper}>
@@ -111,10 +131,20 @@ export const ExpenseTable: FC<ExpenseTableProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow style={{backgroundColor: "#2196F3"}}>
+            <TableRow style={{backgroundColor: "#FF5733"}}>
               <TableCell />
               <TableCell align="center" style={{color: "#FFFFFF"}}>Total Spent</TableCell>
               <TableCell align="center" style={{color: "#FFFFFF"}}>{total}</TableCell>
+            </TableRow>
+            <TableRow style={{backgroundColor: "#2196F3"}}>
+              <TableCell />
+              <TableCell align="center" style={{color: "#FFFFFF"}}>Total Income</TableCell>
+              <TableCell align="center" style={{color: "#FFFFFF"}}>{income}</TableCell>
+            </TableRow>
+            <TableRow style={{backgroundColor: "#4caf50"}}>
+              <TableCell />
+              <TableCell align="center" style={{color: "#FFFFFF"}}>Income - Spent</TableCell>
+              <TableCell align="center" style={{color: "#FFFFFF"}}>{diff}</TableCell>
             </TableRow>
             {expensesRows.map((row) => (
               <Row

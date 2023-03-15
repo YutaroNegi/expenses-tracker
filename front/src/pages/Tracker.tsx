@@ -146,10 +146,6 @@ export const Tracker = () => {
       return;
     }
 
-    if (expenseForm.fkCategoryId === 11) {
-      expenseForm.amount = expenseForm.amount * -1;
-    }
-
     if (verifyInstallments(expenseForm.installments) === false) {
       return;
     }
